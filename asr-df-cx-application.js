@@ -5,15 +5,6 @@ require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser')
 const app = express();
-// const expressWs = require('express-ws')(app);
-// const { Readable } = require('stream');
-// const cors = require('cors');
-// const https = require('https');
-// const dialogflow = require('dialogflow');
-// const Conversation = require('./conversations');
-
-// const prefix = "https://";
-// const wsprefix = "wss://";
 
 const dfConnectingServer = process.env.DF_CONNECTING_SERVER;
 
@@ -30,14 +21,14 @@ const vonage = new Vonage({
   apiKey: process.env.API_KEY,
   apiSecret: process.env.API_SECRET,
   applicationId: process.env.APP_ID,
-  privateKey: './private.key'
+  privateKey: process.env.PRIVATE_KEY_FILE
 });
 
 //==========================================================
 
 app.use(bodyParser.json());
 
-//----
+//---- CORS policy - update to your requirements
 
 // app.use(function (req, res, next) {
 //   res.header("Access-Control-Allow-Origin", "*");
@@ -134,10 +125,6 @@ app.post('/event', (req, res) => {
 
 app.get('/ws_answer', (req, res) => {
   
-  // const date = new Date().toLocaleString();
-  // console.log(">>> ws_answer at " + date);
-  // console.log(">>> caller call leg uuid:", req.query.original_uuid);
-  // console.log(">>> websocket leg uuid:", req.query.uuid);
 
   const nccoResponse = [
     {
@@ -156,33 +143,21 @@ app.get('/ws_answer', (req, res) => {
 
 app.post('/ws_event', (req, res) => {
 
-  // TBD - if second switch case is not needed, change the "switch" to a "if"
-  switch (req.body.status) {
+  if (req.body.status == "answered") {
 
-    case "answered":
+    const wsUuid = req.body.uuid;
 
-      const wsUuid = req.body.uuid;
-
-      // Get Dialogflow to say its welcome greeting right from the start
-      setTimeout(() => {
-        vonage.calls.talk.start(wsUuid, {text: 'Hello', language: 'en-US', style: 11  , loop: 1}, (err, res) => {
-          if (err) { console.error('>>> TTS to bot websocket ' + wsUuid + 'error:', err); }
-          else {console.log ('>>> TTS to bot websocket ' + wsUuid + ' ok!')}
-        });
-      }, 2000);  
-      
-      break;
-
-    // case "completed":
-
-    //   // Original call uuid
-    //   const uuid = req.query.orig_uuid; // Original call uuid
-      
-    //   // Free up memory space as the timers array for this call is no longer needed
-    //   app.set(`playtimers_${uuid}`, undefined);
-      
-    //   break;  
-  }
+    // Get Dialogflow to say its welcome greeting right from the start
+    // Change the 'text' argument to be consistent with the DF CX agent welcome intent if necessary
+    // Change the 'text' argument to be consistent with the selected language locale if necessary
+    setTimeout(() => {
+      vonage.calls.talk.start(wsUuid, {text: 'Hello', language: 'en-US', style: 11  , loop: 1}, (err, res) => {
+        if (err) { console.error('>>> TTS to bot websocket ' + wsUuid + 'error:', err); }
+        else {console.log ('>>> TTS to bot websocket ' + wsUuid + ' ok!')}
+      });
+    }, 2000);  
+  
+  }    
 
   res.status(200).send('Ok');
 
