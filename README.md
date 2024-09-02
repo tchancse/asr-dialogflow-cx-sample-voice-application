@@ -20,14 +20,25 @@ Once this application will be running, you call in to the **`phone number linked
 
 First set up a STT/Dialogflow CX reference connection code from https://github.com/nexmo-se/asr-dialogflow-cx-reference-connection.
 
-Default local (not public!) reference connection code `port` is: 5000.
+Default local (not public!) reference connection code `port` is: 6000.
 
 If you plan to test using `Local deployment` with ngrok (Internet tunneling service) for both the Dialogflow reference connection code and this sample application, you may set up [multiple ngrok tunnels](https://ngrok.com/docs#multiple-tunnels).
 
-For the next steps, you will need:
+To do that, [Download and install ngrok](https://ngrok.com/download), an Internet tunelling service.</br>
+Sign in or sign up with [ngrok](https://ngrok.com/), from the menu, follow the **Setup and Installation** guide.
+
+Set up a domain to forward to the local port 8000 (as this server application will be listening on port 8000).
+
+Start ngrok to listen on ports 6000 and 8000,</br>
+please take note of the ngrok **Enpoint URL** that forwards to local port 8000 as it will be need in the next section,
+that URL looks like:</br>
+`https://xxxxxxxx.ngrok.io`
+
+You will also need:
 - The STT/Dialogflow CX reference connection code server's public hostname and if necessary public port,</br>
-e.g. `xxxxxxxx.ngrok.io`, `xxxxxxxx.herokuapp.com`, `myserver.mycompany.com:32000`  (as **`DF_CONNECTING_SERVER`**),</br>
-no `port` is necessary with ngrok or heroku as public hostname.</br>
+e.g. `yyyyyyyy.ngrok.io`, `yyyyyyyy.herokuapp.com`, `myserver.mycompany.com:32000`  (as **`DF_CONNECTING_SERVER`**),</br>
+no `port` is necessary with ngrok or heroku as public hostname,</br>
+that host name to specify must not have leading protocol text such as https://, wss://, nor trailing /.
 
 ## Set up your Vonage Voice API application credentials and phone number
 
@@ -41,8 +52,8 @@ Enable Voice
 - Under Answer URL, leave HTTP GET, and enter https://\<host\>:\<port\>/answer (replace \<host\> and \<port\> with the public host name and if necessary public port of the server where this sample application is running)</br>
 - Under Event URL, **select** HTTP POST, and enter https://\<host\>:\<port\>/event (replace \<host\> and \<port\> with the public host name and if necessary public port of the server where this sample application is running)</br>
 Note: If you are using ngrok for this sample application, the answer URL and event URL look like:</br>
-https://yyyyyyyy.ngrok.io/answer</br>
-https://yyyyyyyy.ngrok.io/event</br> 	
+`https://xxxxxxxx.ngrok.io/answer`</br>
+`https://xxxxxxxx.ngrok.io/event`</br> 	
 - Click on [Generate public and private key] if you did not yet create or want new ones, save the private key file in this application folder as .private.key (leading dot in the file name).</br>
 **IMPORTANT**: Do not forget to click on [Save changes] at the bottom of the screen if you have created a new key set.</br>
 - Link a phone number to this application if none has been linked to the application.
@@ -70,7 +81,7 @@ You may select one of the following 2 types of deployments.
 
 ### Local deployment
 
-To run your own instance of this sample application locally, you'll need an up-to-date version of Node.js (we tested with version 14.18).
+To run your own instance of this sample application locally, you'll need Node.js (we tested with version 18.19).
 
 Download this sample application code to a local folder, then go to that folder.
 
@@ -140,8 +151,8 @@ git push heroku master
 On your Heroku dashboard where your application page is shown, click on `Open App` button, that hostname is the one to be used under your corresponding [Vonage Voice API application Capabilities](https://dashboard.nexmo.com/applications) (click on your application, then [Edit]).</br>
 
 For example, the respective links would be like:</br>
-https://myappname.herokuapp.com/answer</br>
-https://myappname.herokuapp.com/event</br>
+`https://myappname.herokuapp.com/answer`</br>
+`https://myappname.herokuapp.com/event`</br>
 
 See more details in above section **Set up your Vonage Voice API application credentials and phone number**.
 
