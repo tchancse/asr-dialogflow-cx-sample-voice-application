@@ -30,7 +30,7 @@ Sign in or sign up with [ngrok](https://ngrok.com/), from the menu, follow the *
 Set up a domain to forward to the local port 8000 (as this server application will be listening on port 8000).
 
 Start ngrok to listen on ports 6000 and 8000,</br>
-please take note of the ngrok **Enpoint URL** that forwards to local port 8000 as it will be need in the next section,
+please take note of the ngrok **Enpoint URL** that forwards to local port 8000 as it will be needed in the next section,
 that URL looks like:</br>
 `https://xxxxxxxx.ngrok.io`
 
